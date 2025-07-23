@@ -11,6 +11,7 @@ os.environ['NJOY'] = '/Users/ljb841@student.bham.ac.uk/NJOY2016/bin/njoy'
 # user inputs
 ek=sandy.energy_grids.VITAMINJ175
 library = 'tendl_21' # endfb_71 endfb_80 jendl_40u jeff_33  tendl_21
+#testing
 data_file_name = 'foil_data_wo_in'
 reaction_labels = [#r'${}^{115}$In(n,$\gamma$)',
                 r'${}^{164}$Dy(n,$\gamma$)',
