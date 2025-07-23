@@ -1,3 +1,3 @@
 Sandy workshop
 
-extracting cross sections and uncertainties using NJOY with Bondarenko self shielding
+njoy_xs: extract cross sections and uncertainties using NJOY with Bondarenko self shielding
