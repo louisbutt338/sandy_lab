@@ -6,6 +6,7 @@ from matplotlib import rc
 rc("font", **{"family":"sans-serif", "sans-serif":["Helvetica"]},weight='normal',size=20)
 import numpy as np
 import csv
+
 os.environ['NJOY'] = '/Users/ljb841@student.bham.ac.uk/NJOY2016/bin/njoy'
 
 # user inputs
@@ -145,14 +146,10 @@ def _export_and_plot_xs(
              material_list,mt_list,density_list,
              mass_list,abundance_list,atomic_mass_list,
              labels_list,thickness_list):
-        # REPLACE THESE LINES WITH NEW GROUPR FUNCTION
-        #_get_gendf_data(material,mt)
-        #_get_errorr_data(material,mt)
         nuclear_data = _get_gendf_data(material,mt)
         array_of_arrays = _extract_array_data(nuclear_data)
 
         # reaction dependent corrections
-        #    xs_final = [(i/10) for i in xs_array]
         if material==491150 and mt==4:
             array_of_arrays = [(i/8) for i in array_of_arrays]
         if material ==410930 and mt==16:
