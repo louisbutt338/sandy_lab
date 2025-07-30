@@ -11,21 +11,23 @@ os.environ['NJOY'] = '/Users/ljb841@student.bham.ac.uk/NJOY2016/bin/njoy'
 
 # user inputs
 ek=sandy.energy_grids.VITAMINJ175
-library = 'tendl_21' # endfb_71 endfb_80 jendl_40u jeff_33  tendl_21
-data_file_name = 'foil_data_wo_in'
-reaction_labels = [#r'${}^{115}$In(n,$\gamma$)',
-                r'${}^{164}$Dy(n,$\gamma$)',
-                r'${}^{197}$Au(n,$\gamma$)',
-                r"${}^{115}$In(n,n')", 
-                r'${}^{65}$Cu(n,p) *',
-                r'${}^{56}$Fe(n,p)',
-                r'${}^{27}$Al(n,$\alpha$)', 
-                r'${}^{197}$Au(n,2n)',
-                r'${}^{93}$Nb(n,2n)',
-                r'${}^{58}$Ni(n,2n) ']
+library = 'endfb_80d' # endfb_71 endfb_80 jendl_40u jeff_33 tendl_21
+data_file_name = 'data/foil_data_dli'
+#reaction_labels = [r'${}^{115}$In(n,$\gamma$)',
+#                r'${}^{164}$Dy(n,$\gamma$)',
+#                r'${}^{197}$Au(n,$\gamma$)',
+#                r"${}^{115}$In(n,n')", 
+#                r'${}^{65}$Cu(n,p) *',
+#                r'${}^{56}$Fe(n,p)',
+#                r'${}^{27}$Al(n,$\alpha$)', 
+#                r'${}^{197}$Au(n,2n)',
+#                r'${}^{93}$Nb(n,2n)',
+#                r'${}^{58}$Ni(n,2n) ']
 
 #reaction_labels = [r'${}^{56}$Fe(n,p)']
 #reaction_labels = [r'${}^{115}$In(n,$\gamma$)']
+
+reaction_labels = [r'${}^{7}$Li(d,n)']
 
 # run the sandy get_endf routine
 def _get_endf_file(material):
@@ -193,12 +195,13 @@ def run():
     json_file_data = json.load(open(f'{data_file_name}.json'))
     material_list =   [x['mat_number'] for x in json_file_data.values()]
     mt_list =         [x['mt_value'] for x in json_file_data.values() ]
-    density_list =    [x['density_gcm3'] for x in json_file_data.values()]
-    mass_list =       [x['mass_g'] for x in json_file_data.values()]
-    abundance_list =  [x['isotope_abundance'] for x in json_file_data.values()]
-    atomic_mass_list= [x['foil_atomic_mass'] for x in json_file_data.values()]
-    thickness_list =  [x['thickness_cm'] for x in json_file_data.values()]
     labels_list = reaction_labels
+    #density_list =    [x['density_gcm3'] for x in json_file_data.values()]
+    #mass_list =       [x['mass_g'] for x in json_file_data.values()]
+    #abundance_list =  [x['isotope_abundance'] for x in json_file_data.values()]
+    #atomic_mass_list= [x['foil_atomic_mass'] for x in json_file_data.values()]
+    #thickness_list =  [x['thickness_cm'] for x in json_file_data.values()]
+
     _export_and_plot_stdev(material_list,mt_list,labels_list)
     #_export_and_plot_xs(
     #    material_list,mt_list,density_list,
