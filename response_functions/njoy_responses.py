@@ -16,8 +16,8 @@ os.environ['NJOY'] = '/Users/ljb841@student.bham.ac.uk/NJOY2016/bin/njoy'
 #ek=custom_gs
 ek=sandy.energy_grids.VITAMINJ175
 
-library = 'endfb_81d' # endfb_71 endfb_80 jendl_40u jeff_33 tendl_21
-data_file_name = 'data/target_data_dli'
+library = 'endfb_80' # endfb_71 endfb_80 jendl_40u jeff_33 tendl_21
+data_file_name = 'data/foil_data_fe'
 #reaction_labels = [r'${}^{115}$In(n,$\gamma$)',
 #                r'${}^{164}$Dy(n,$\gamma$)',
 #                r'${}^{197}$Au(n,$\gamma$)',
@@ -29,26 +29,26 @@ data_file_name = 'data/target_data_dli'
 #                r'${}^{93}$Nb(n,2n)',
 #                r'${}^{58}$Ni(n,2n) ']
 
-#reaction_labels = [r'${}^{56}$Fe(n,p)']
-reaction_labels = ['${}^{7}$Li(p,n)']
+reaction_labels = [r'${}^{56}$Fe(n,n)']
+#reaction_labels = ['${}^{7}$Li(p,n)']
 
 # run the sandy get_endf routine
 def _get_endf_file(material):
     endf_file = sandy.get_endf6_file(library, "xs", material)
+    print(endf_file)
     return endf_file
 
 # get covariance, standard deviation, from a material endf6 file
 def _get_errorr_data(material,mt_value):
     mt = [mt_value]
-    #try:
-    # use the get_errorr function to grab cov,std data
-    endf_file = _get_endf_file(material)
-    print(endf_file)
-    ekws = dict(ek=ek)
-    err = endf_file.get_errorr(temperature=0,err=1,chi=False, nubar=False, mubar=False, errorr33_kws=ekws,verbose=False)["errorr33"]
-    #except:
-    #    print(f'-----> reactions not found for MAT {material}: MT {mt_value}')
-    #    return [],np.array([])
+    try:
+        # use the get_errorr function to grab cov,std data
+        endf_file = _get_endf_file(material)
+        ekws = dict(ek=ek)
+        err = endf_file.get_errorr(temperature=0,err=1,chi=False, nubar=False, mubar=False, errorr33_kws=ekws,verbose=False)["errorr33"]
+    except:
+        print(f'-----> reactions not found for MAT {material}: MT {mt_value}')
+        return [],np.array([])
     covariance = err.get_cov()
     std = covariance.get_std().reset_index().query("MT in @mt")
     xs = err.get_xs(mt=mt).data.to_numpy()
@@ -110,7 +110,7 @@ def _export_and_plot_stdev(material_list,mt_values_list,reaction_labels):
             # plot uncertainty data
             ek_mev = [(i/1e6) for i in ek]
             for mt_iterator in range(len(array_of_arrays)):
-                print(f'uncert at {ek_mev[-10]} MeV is {array_of_arrays[mt_iterator][-10]}')
+                print(f'uncert at {ek_mev[6]} MeV is {array_of_arrays[mt_iterator][6]}%')
                 c=next(color)
                 ax1.stairs(array_of_arrays[mt_iterator], ek_mev,label=f'{reaction}',color=c,lw=1.5)
                 ax2.stairs(array_of_arrays[mt_iterator], ek_mev,label=f'{reaction}',color=c,lw=1.5)
