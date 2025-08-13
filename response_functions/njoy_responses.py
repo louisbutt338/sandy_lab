@@ -17,25 +17,24 @@ os.environ['NJOY'] = '/Users/ljb841@student.bham.ac.uk/NJOY2016/bin/njoy'
 ek=sandy.energy_grids.VITAMINJ175
 
 library = 'endfb_80' # endfb_71 endfb_80 jendl_40u jeff_33 tendl_21
-data_file_name = 'data/foil_data_fe'
-#reaction_labels = [r'${}^{115}$In(n,$\gamma$)',
-#                r'${}^{164}$Dy(n,$\gamma$)',
-#                r'${}^{197}$Au(n,$\gamma$)',
-#                r"${}^{115}$In(n,n')", 
-#                r'${}^{65}$Cu(n,p) *',
-#                r'${}^{56}$Fe(n,p)',
-#                r'${}^{27}$Al(n,$\alpha$)', 
-#                r'${}^{197}$Au(n,2n)',
-#                r'${}^{93}$Nb(n,2n)',
-#                r'${}^{58}$Ni(n,2n) ']
+data_file_name = 'data/foil_data'
+reaction_labels = [r'${}^{115}$In(n,$\gamma$)',
+                r'${}^{164}$Dy(n,$\gamma$)',
+                r'${}^{197}$Au(n,$\gamma$)',
+                r"${}^{115}$In(n,n')", 
+                r'${}^{65}$Cu(n,p) *',
+                r'${}^{56}$Fe(n,p)',
+                r'${}^{27}$Al(n,$\alpha$)', 
+                r'${}^{197}$Au(n,2n)',
+                r'${}^{93}$Nb(n,2n)',
+                r'${}^{58}$Ni(n,2n) ']
 
-reaction_labels = [r'${}^{56}$Fe(n,n)']
+#reaction_labels = [r'${}^{56}$Fe(n,n)']
 #reaction_labels = ['${}^{7}$Li(p,n)']
 
 # run the sandy get_endf routine
 def _get_endf_file(material):
     endf_file = sandy.get_endf6_file(library, "xs", material)
-    print(endf_file)
     return endf_file
 
 # get covariance, standard deviation, from a material endf6 file
@@ -66,6 +65,7 @@ def _get_gendf_data(material,mt_value):
         endf_file = _get_endf_file(material)
         ekws = dict(ek=ek,nuclide_production=True,iwt=3)
         gendf = endf_file.get_gendf(minimal_processing=True, err=0.005, temperature=0,groupr_kws=ekws)
+        print(gendf)
     except:
         print(f'-----> reactions not found for MAT {material}: MT {mt_value}')
         return [],np.array([])
@@ -207,8 +207,8 @@ def run():
     atomic_mass_list= [x['foil_atomic_mass'] for x in json_file_data.values()]
     thickness_list =  [x['thickness_cm'] for x in json_file_data.values()]
 
-    _export_and_plot_stdev(material_list,mt_list,labels_list)
-    #_export_and_plot_xs(material_list,mt_list,density_list,
-    #                    mass_list,abundance_list,atomic_mass_list,
-    #                    labels_list,thickness_list)
+    #_export_and_plot_stdev(material_list,mt_list,labels_list)
+    _export_and_plot_xs(material_list,mt_list,density_list,
+                        mass_list,abundance_list,atomic_mass_list,
+                        labels_list,thickness_list)
 run()
